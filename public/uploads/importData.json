@@ -1,0 +1,32 @@
+[
+    {
+        "NAME": "Coca Cola",
+        "CATEGORY": "Food",
+        "PRODUCT_TYPE": "standard",
+        "VARIANT_NAME": "",
+        "VARIANT_VALUE": "",
+        "SKU": 45280017290,
+        "BARCODE": 4901234565995,
+        "PRICE": 697
+    },
+    {
+        "NAME": "Maggie",
+        "CATEGORY": "Food",
+        "PRODUCT_TYPE": "variant",
+        "VARIANT_NAME": "color,size",
+        "VARIANT_VALUE": "green,large",
+        "SKU": 45280017291,
+        "BARCODE": 4901234567994,
+        "PRICE": 250
+    },
+    {
+        "NAME": "Maggie",
+        "CATEGORY": "Food",
+        "PRODUCT_TYPE": "variant",
+        "VARIANT_NAME": "color,size",
+        "VARIANT_VALUE": "red,small",
+        "SKU": 45280017291,
+        "BARCODE": 4901234567994,
+        "PRICE": 270
+    }
+]

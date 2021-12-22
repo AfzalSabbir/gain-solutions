@@ -14,7 +14,9 @@ class ProductVariantFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'sku'     => $this->faker->text(20),
+            'barcode' => $this->faker->text(20),
+            'price'   => $this->faker->randomFloat(2, 3, 5),
         ];
     }
 }

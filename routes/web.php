@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\ImportProductJob;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    ImportProductJob::dispatch();
+    //return (new \App\Jobs\ImportProductJob())->handle();
     return view('welcome');
 });

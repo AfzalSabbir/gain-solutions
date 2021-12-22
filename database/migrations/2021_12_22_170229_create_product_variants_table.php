@@ -16,9 +16,9 @@ class CreateProductVariantsTable extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->index()->constrained()->onDelete('cascade');
-            $table->string('sku', 30)->index();
-            $table->string('barcode', 30)->index();
-            $table->decimal('price', 10);
+            $table->string('sku', 30)->nullable()->index();
+            $table->string('barcode', 30)->nullable();
+            $table->decimal('price', 10)->default(0);
             $table->timestamps();
         });
     }
