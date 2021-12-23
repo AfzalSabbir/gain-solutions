@@ -9,20 +9,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ImportProductJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $file_name;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($file_name)
     {
-        //
+        $this->file_name = $file_name;
     }
 
     /**
@@ -32,9 +35,22 @@ class ImportProductJob implements ShouldQueue
      */
     public function handle()
     {
-        //$json_data = Storage::disk('public_uploads')->files('uploads', 'importData.json');
-        $path        = public_path() . "/uploads/importData.json";
-        $json_values = json_decode(file_get_contents($path), true);
+        if (Storage::disk('public')->exists("import-product/{$this->file_name}")) {
+            $json_data   = Storage::disk('public')->get("import-product/{$this->file_name}");
+            $json_values = json_decode($json_data, true);
+            $this->importProducts($json_values);
+        }
+    }
+
+    /**
+     * import products in database
+     *
+     * @param $json_values
+     * @return void
+     */
+    private function importProducts($json_values)
+    {
+        DB::beginTransaction();
         foreach ($json_values as $json_value) {
             $category = Category::firstOrCreate(['title' => $json_value['CATEGORY']]);
             $product  = $category->products()->create([
@@ -47,5 +63,6 @@ class ImportProductJob implements ShouldQueue
                 'price'   => $json_value['PRICE'] ?? 0,
             ]);
         }
+        DB::commit();
     }
 }

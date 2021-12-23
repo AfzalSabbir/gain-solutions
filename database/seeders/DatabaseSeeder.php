@@ -17,9 +17,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        $category = Category::factory()->create();
+        Product::factory(10000)
+            ->for($category)
+            ->has(ProductVariant::factory()->count(2))
+            ->create();
+
         /*Category::factory(20)
             ->has(Product::factory()->count(5)
-                ->has(ProductVariant::factory()->count(5))
+                ->has(ProductVariant::factory()->count(2))
             )->create();*/
     }
 }

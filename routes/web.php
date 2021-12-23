@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    ImportProductJob::dispatch();
-    //return (new \App\Jobs\ImportProductJob())->handle();
+//    ImportProductJob::dispatch();
+    return (new \App\Jobs\ImportProductJob('1640281613-importData.json'))->handle();
     return view('welcome');
 });
+
+Route::get('products', [\App\Http\Controllers\ProductController::class, 'index']);
