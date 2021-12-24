@@ -7,7 +7,6 @@ use App\Jobs\ImportProductJob;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ApiProductController extends Controller
@@ -31,26 +30,7 @@ class ApiProductController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->filled('json_data')) {
-            $collection = collect($request->json_data);
-            foreach ($collection->chunk(10000) as $item) {
-                ImportProductJob::dispatch($item->toArray());
-            }
-            return response()->json(['message' => 'Data Inserting...']);
-        } else {
-            return response()->json(['message' => 'Data not found'], 404);
-        }
-
-        //ImportProductJob::dispatch($request->json_data);
-        /*foreach ($request->json_data as $item) {
-
-        }*/
-        /*dd(json_decode($request));
-        foreach ($request as $item) {
-            return $item;
-        }*/
-        //ImportProductJob::dispatch($request);
-        /*if ($request->file('json_file')) {
+        if ($request->file('json_file')) {
             //uploading the file
             $file     = $request->file('json_file');
             $filename = time() . '-' . $file->getClientOriginalName();
@@ -61,7 +41,7 @@ class ApiProductController extends Controller
             return response()->json(['message' => 'File Upload successfully']);
         } else {
             return response()->json(['message' => 'File not found'], 404);
-        }*/
+        }
     }
 
     /**
