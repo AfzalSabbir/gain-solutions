@@ -35,11 +35,12 @@ class ImportProductJob implements ShouldQueue
      */
     public function handle()
     {
-        if (Storage::disk('public')->exists("import-product/{$this->file_name}")) {
+        $this->importProducts($this->file_name);
+        /*if (Storage::disk('public')->exists("import-product/{$this->file_name}")) {
             $json_data   = Storage::disk('public')->get("import-product/{$this->file_name}");
             $json_values = json_decode($json_data, true);
             $this->importProducts($json_values);
-        }
+        }*/
     }
 
     /**
