@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Category;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -32,6 +33,7 @@ class ImportProductJob implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws FileNotFoundException
      */
     public function handle()
     {
@@ -50,19 +52,11 @@ class ImportProductJob implements ShouldQueue
      */
     private function importProducts($json_values)
     {
-        DB::beginTransaction();
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+
         foreach ($json_values as $json_value) {
-            $category = Category::firstOrCreate(['title' => $json_value['CATEGORY']]);
-            $product  = $category->products()->create([
-                'title'        => $json_value['NAME'],
-                'product_type' => $json_value['PRODUCT_TYPE'],
-            ]);
-            $product->productVariants()->create([
-                'sku'     => $json_value['SKU'],
-                'barcode' => $json_value['BARCODE'],
-                'price'   => $json_value['PRICE'] ?? 0,
-            ]);
+            SingleImportProductJob::dispatch($json_value);
         }
-        DB::commit();
     }
 }
